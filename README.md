@@ -94,7 +94,7 @@ Folder Structure
 How to Use
 
 Clone the repo
-git clone https://github.com/kiranruba/MaxHome_TakeHome.git
+git clone https://github.com/kiranruba/Maxhome_Assignment.git
 cd MaxHome_TakeHome
 
 
