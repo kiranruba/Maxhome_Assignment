@@ -5,18 +5,25 @@ const directionMap = {
     W: { L: 'S', R: 'N', dx: -1, dy: 0 },
 };
 const config = {
-  preventCollision: true,  // Disallow two robots occupying the same position
+  preventCollision: false,  // Disallow two robots occupying the same position
   preventRetrace: false    // Disallow stepping on any position visited by earlier robots
 };
 
-function simulate(plateau, robots, robotPositions) {
+function simulate( robots, robotPositions) {
     const results = [];
 
     for (let robot of robots) {
-        let { x, y, dir } = robot.start;
+        let { x, y, dir,fuel } = robot.start;
+        let { maxX,maxY }=robot.plateau;
 
         for (let inst of robot.instructions) {
+          if(robot.start.fuel<1)
+          break;
+          else {
+              robot.start.fuel--;
+          }
             if (inst === 'L' || inst === 'R') {
+
                 dir = directionMap[dir][inst];
             } else if (inst === 'M') {
                 const move = directionMap[dir];
@@ -25,7 +32,7 @@ function simulate(plateau, robots, robotPositions) {
                 const newKey = `${newX},${newY}`;
 
                 // Check bounds
-                const withinBounds = newX >= 0 && newX <= plateau.maxX && newY >= 0 && newY <= plateau.maxY;
+                const withinBounds = newX >= 0 && newX <= maxX && newY >= 0 && newY <= maxY;
                 let collision = false;
                 if (config.preventCollision) {
                    collision = robotPositions.has(newKey);
@@ -46,7 +53,7 @@ function simulate(plateau, robots, robotPositions) {
             }
         }
 
-        results.push(`${x} ${y} ${dir}`);
+        results.push(`${x} ${y} ${dir} ${robot.start.fuel}`);
     }
 
     return results;

@@ -5,7 +5,7 @@ const { simulate  } = require('./src/simulator');
 
 const inputPath = path.join(__dirname, 'input', 'input.txt');
 const input = fs.readFileSync(inputPath, 'utf8');
-const { plateau, robots, robotPositions } = parseInput(input); 
-const results = simulate(plateau, robots, robotPositions);
+const {  robots, robotPositions } = parseInput(input);
+const results = simulate( robots, robotPositions);
 
 console.log(results.join('\n'));

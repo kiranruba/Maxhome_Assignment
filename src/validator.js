@@ -3,7 +3,7 @@ const validateRequirement = (lines) => {
     if (lines.length < 3) {
         throw new Error("Invalid input: A minimum of 3 lines are required. Plateau and robot positions must be specified.");
     }
-    if ((lines.length - 1) % 2 !== 0) {
+    if ((lines.length ) % 3 !== 0) {
         throw new Error("Invalid input: Robot positions and movement instructions must come in pairs, along with plateau coordinates. Ensure the plateau coordinates are provided, and every robot has a corresponding set of movement instructions.");
     }
 }
@@ -19,10 +19,11 @@ const validatePlateau = (coords) => {
    }
 };
 // Validate robot position
-const validateRobotPosition = (xRaw, yRaw, direction, plateau, line, collisionFlag, extras) => {
+const validateRobotPosition = (xRaw, yRaw, direction,fuelRaw, plateau, line, collisionFlag, extras) => {
     const validDirections = ['N', 'E', 'S', 'W'];
     const x = Number(xRaw);
     const y = Number(yRaw);
+    const fuel=Number(fuelRaw)
 
     if (xRaw.trim() === '' || yRaw.trim() === '' || direction.trim() === '') {
       throw new Error(`Invalid robot position at line ${line + 2}. Must include two coordinates and a direction.`);
@@ -33,6 +34,13 @@ const validateRobotPosition = (xRaw, yRaw, direction, plateau, line, collisionFl
     // Ensure coordinates are positive numbers
     if (isNaN(x) || isNaN(y)) {
         throw new Error(`Invalid robot coordinates: ${xRaw}, ${yRaw} at line ${line + 2}. Coordinates must be numeric values.`);
+    }
+    if (isNaN(fuel)) {
+        throw new Error(`Invalid robot fuel value: ${fuelRaw} at line ${line + 2}. fuel must be numeric values.`);
+    }
+    if(fuel <1){
+      throw new Error(`Robot fuel not suffient ${fuelRaw} at line ${line + 2}. fuel must be greater than zero`);
+
     }
 
     // Ensure coordinates are within plateau
